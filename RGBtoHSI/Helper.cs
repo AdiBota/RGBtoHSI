@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace RGBtoHSI
 {
-    public class Helper
+    public static class Helper
     {
         public static double[] ConvertRGBtoHSI(double red, double green, double blue)
         {
@@ -18,15 +18,28 @@ namespace RGBtoHSI
 
             double intensity = (r + g + b) / 3.0;
 
+            if (intensity < 1e-10)
+            {
+                return new double[] { 0, 0, 0 }; 
+            }
+
             double min = Math.Min(Math.Min(r, g), b);
-            double saturation = 1.0 - (3.0 / (r + g + b) * min);
+            double saturation;
+            if (r == g && g == b)
+            {
+                saturation = 0;
+            }
+            else
+            {
+                saturation = 1.0 - (3.0 / (r + g + b) * min);
+            }
 
             double hue = 0.0;
             if (saturation != 0)
             {
                 double num = 0.5 * ((r - g) + (r - b));
                 double den = Math.Sqrt((r - g) * (r - g) + (r - b) * (g - b));
-                double theta = Math.Acos(num / (den + 1e-10));
+                double theta = Math.Acos(num / Math.Max(den, 1e-10));
 
                 if (b <= g)
                 {
@@ -43,7 +56,7 @@ namespace RGBtoHSI
             return new double[] { hue, saturation, intensity };
         }
 
-        public static double[] HsiToRgba(double h, double s, double i)
+        public static double[] ConvertHSItoRGB(double h, double s, double i)
         {
             double rValue, gValue, bValue;
 
