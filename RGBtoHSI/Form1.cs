@@ -123,8 +123,6 @@ namespace RGBtoHSI
 
         private void UpdateHSIControls(double hue, double saturation, double intensity)
         {
-            Console.WriteLine("in functie " + hue + " " + saturation + " " + intensity);
-
             trackHSI_hue.Value = (int)hue;
             trackHSI_saturation.Value = (int)(saturation * 100);
             trackHSI_intensity.Value = (int)(intensity * 100);
@@ -144,14 +142,10 @@ namespace RGBtoHSI
 
         private void UpdateRGBControlsBasedOnHSI(double hue, double saturation, double intensity)
         {
-            Console.WriteLine("in a 2a functie " + hue + " " + saturation + " " + intensity);
-
             var rgbValues = Helper.ConvertHSItoRGB(hue, saturation, intensity);
             var red = (int)rgbValues[0];
             var green = (int)rgbValues[1];
             var blue = (int)rgbValues[2];
-
-            Console.WriteLine("in a 2a functie ver2 " + red + " " + green + " " + blue);
 
             trackRGB_red.Value = red;
             trackRGB_green.Value = green;
@@ -161,12 +155,9 @@ namespace RGBtoHSI
             textRGB_green.Text = green.ToString();
             textRGB_blue.Text = blue.ToString();
 
-
             Color color = Color.FromArgb(red, green, blue);
             colorBarRGB.BackColor = color;
             hexaRGB.Text = ColorTranslator.ToHtml(color);
-
         }
-
     }
 }
